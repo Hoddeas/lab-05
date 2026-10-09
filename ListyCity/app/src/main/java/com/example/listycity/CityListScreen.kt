@@ -1,5 +1,6 @@
 package com.example.listycity
 
+import android.R.attr.onClick
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,6 +33,7 @@ fun CityListScreen(
     cities: List<City>,
     onAddCity: (City) -> Unit,
     onUpdateCity: (City, City) -> Unit,
+    delCity: (City) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var newCityName by remember { mutableStateOf("") }
@@ -166,7 +168,8 @@ fun CityListScreen(
                         selectedCity = city
                         editedCityName = city.name
                         editedProvinceName = city.province
-                    }
+                    },
+                    delCity = delCity
                 )
                 if (index < cities.lastIndex) {
                     HorizontalDivider()
@@ -180,7 +183,8 @@ fun CityListScreen(
 @Composable
 fun CityRow(
     city: City,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    delCity: (City) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -199,6 +203,14 @@ fun CityRow(
             fontSize = 30.sp,
             modifier = Modifier.weight(1f)
         )
+        
+        Button (
+            onClick = {
+                delCity(city)
+            }
+        ) {
+            Text("Delete")
+        }
     }
 }
 
@@ -213,7 +225,8 @@ fun CityListScreenPreview() {
                 City("Calgary", "AB")
             ),
             onAddCity = {},
-            onUpdateCity = { _, _ -> }
+            onUpdateCity = { _, _ -> },
+            delCity = {}
         )
     }
 }
